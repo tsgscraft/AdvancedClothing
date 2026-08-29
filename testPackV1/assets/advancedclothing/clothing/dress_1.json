@@ -1,0 +1,42 @@
+{
+  "name": "clothing.dress.dress_1",
+  "type": "advancedclothing:dress",
+  "slim_model": "advancedclothing:models/clothing/dress/player_model_slim.json",
+  "modifiers": {
+    "second_layer": {
+      "head": {
+        "scale": [0.98, 0.98, 0.98]
+      },
+      "body": {
+        "scale": [0.98, 0.98, 0.98]
+      },
+      "left_arm": {
+        "scale": [0.98, 0.98, 0.98]
+      },
+      "right_arm": {
+        "scale": [0.98, 0.98, 0.98]
+      },
+      "left_leg": {
+        "scale": [0.98, 0.98, 0.98]
+      },
+      "right_leg": {
+        "scale": [0.98, 0.98, 0.98]
+      },
+      "lboob": {
+        "scale": [0.98, 0.98, 0.98]
+      },
+      "rboob": {
+        "scale": [0.98, 0.98, 0.98]
+      }
+    }
+  },
+  "textures": [
+    {
+      "id": "#0",
+      "location": "advancedclothing:textures/clothing/dress/slim_dress_1.png",
+      "debug": "advancedclothing:textures/clothing/dress/alex.png",
+      "width": 64,
+      "height": 64
+    }
+  ]
+}
