@@ -1,0 +1,13 @@
+{
+  "name": "clothing.hat.tophat",
+  "type": "advancedclothing:hat",
+  "model": "advancedclothing:models/clothing/hat/tophat.json",
+  "textures": [
+    {
+      "id": "#tophat",
+      "location": "advancedclothing:textures/clothing/hats/tophat.png",
+      "width": 64,
+      "height": 64
+    }
+  ]
+}

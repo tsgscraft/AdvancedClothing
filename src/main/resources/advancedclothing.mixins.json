@@ -1,0 +1,20 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "de.tsgscraft.advancedclothing.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+  ],
+  "client": [
+    "PlayerModelAccessor",
+    "PlayerRendererMixin",
+    "fmg.GenderLayerMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "overwrites": {
+    "requireAnnotations": true
+  },
+  "plugin": "de.tsgscraft.advancedclothing.mixin.SlimArmorMixinPlugin"
+}
