@@ -1,10 +1,12 @@
 package de.tsgscraft.advancedclothing.client.screen;
 
 import de.tsgscraft.advancedclothing.client.ClothingElement;
+import de.tsgscraft.advancedclothing.network.SetClothingPayload;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.network.chat.Component;
+import net.neoforged.neoforge.network.PacketDistributor;
 
 public class GridSelectionClothingElement extends GridSelectionItem<GridSelectionClothingElement> {
     
@@ -16,7 +18,9 @@ public class GridSelectionClothingElement extends GridSelectionItem<GridSelectio
 
     @Override
     public void onClick(double x, double y, int button, ClothingSelectionScreen screen) {
-        // TODO: Implement what happens when a clothing element is clicked.
+        PacketDistributor.sendToServer(
+                new SetClothingPayload(clothingElement.type(), clothingElement().id().toString())
+        );
     }
 
     @Override

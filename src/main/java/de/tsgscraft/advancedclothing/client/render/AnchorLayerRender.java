@@ -9,6 +9,7 @@ import de.tsgscraft.advancedclothing.client.ClothingElement;
 import de.tsgscraft.advancedclothing.client.ClothingRegistry;
 import de.tsgscraft.advancedclothing.client.events.ClientModEvents;
 import de.tsgscraft.advancedclothing.client.modifiers.ModelPartModifiers;
+import de.tsgscraft.advancedclothing.mixin.PlayerModelAccessor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.model.geom.EntityModelSet;
@@ -27,6 +28,7 @@ import java.util.UUID;
 public class AnchorLayerRender extends RenderLayer<AbstractClientPlayer, PlayerModel<AbstractClientPlayer>> {
 
     private final AnchorLayer layer;
+    private final AnchorLayer slimLayer;
     public static final Map<UUID, Map<String, ModelPartModifiers>> playerModifiers = new HashMap<>();
 
     public AnchorLayerRender(RenderLayerParent<AbstractClientPlayer, PlayerModel<AbstractClientPlayer>> renderer, EntityModelSet modelSet) {
@@ -35,6 +37,11 @@ public class AnchorLayerRender extends RenderLayer<AbstractClientPlayer, PlayerM
         layer = new AnchorLayer(
                 modelSet.bakeLayer(ClientModEvents.ANCHOR_LAYER),
                 false
+        );
+
+        slimLayer = new AnchorLayer(
+                modelSet.bakeLayer(ClientModEvents.SLIM_ARMOR_LAYER),
+                true
         );
     }
 
@@ -93,12 +100,24 @@ public class AnchorLayerRender extends RenderLayer<AbstractClientPlayer, PlayerM
                 RenderType.entityCutoutNoCull((Config.customSkin && REFERENCE.isCurrentPlayer(entity.getUUID())) ? REFERENCE.customSkin : entity.getSkin().texture())
         );
 
-        layer.renderToBuffer(
-                poseStack,
-                vertexConsumer,
-                light,
-                overlay
-        );
+        if (((PlayerModelAccessor) parent).isSlim()) {
+            layer.copyPropertiesTo(slimLayer);
+            slimLayer.swimAmount = layer.swimAmount;
+
+            slimLayer.renderToBuffer(
+                    poseStack,
+                    vertexConsumer,
+                    light,
+                    overlay
+            );
+        } else {
+            layer.renderToBuffer(
+                    poseStack,
+                    vertexConsumer,
+                    light,
+                    overlay
+            );
+        }
     }
 
     public static void checkFirstPerson(AbstractClientPlayer player, AnchorLayer model) {

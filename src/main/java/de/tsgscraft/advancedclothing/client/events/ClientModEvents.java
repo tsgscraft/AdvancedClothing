@@ -65,9 +65,13 @@ public class ClientModEvents {
     public static final ModelLayerLocation ANCHOR_LAYER =
             new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(REFERENCE.MODID, "anchor_layer"), "main");
 
+    public static final ModelLayerLocation SLIM_ARMOR_LAYER =
+            new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(REFERENCE.MODID, "slim_armor_layer"), "main");
+
     @SubscribeEvent
     public static void onRegisterLayers(EntityRenderersEvent.RegisterLayerDefinitions event) {
         event.registerLayerDefinition(ANCHOR_LAYER, () -> AnchorLayer.createBaseLayer(false));
+        event.registerLayerDefinition(SLIM_ARMOR_LAYER, () -> AnchorLayer.createBaseLayer(true));
     }
 
     @SubscribeEvent

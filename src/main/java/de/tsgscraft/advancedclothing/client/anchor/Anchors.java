@@ -11,7 +11,6 @@ public class Anchors {
 
     private static final List<ClothingAnchor> ANCHORS = new ArrayList<>();
 
-    // TODO: Implement the other anchors (body, left_arm, right_arm, left_leg, right_leg)
     public static ClothingAnchor getAnchor(ClothingAnchorInfo anchorInfo) {
         for (ClothingAnchor anchor : ANCHORS) {
             if (anchor.getAnchor().toString().equals(anchorInfo.getAnchor().toString())) {

@@ -1,18 +1,19 @@
 package de.tsgscraft.advancedclothing.client.screen;
 
 import de.tsgscraft.advancedclothing.client.ClothingRegistry;
+import de.tsgscraft.advancedclothing.network.SetClothingPayload;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
+import net.neoforged.neoforge.network.PacketDistributor;
 
 import java.util.List;
 
 public class ClothingSelectionScreen extends Screen {
 
-    //TODO: Add a back button to go back to the previous screen
-    //TODO: Add a button to clear the current clothing type
     //TODO: Highlight the selected clothing items
     //TODO: Add a keybinding to open the clothing selection screen
     //TODO: Sort the active clothing types at the top of the list
@@ -20,9 +21,10 @@ public class ClothingSelectionScreen extends Screen {
     private GridSelectionWidget<GridSelectionClothingType> gridSelectionTypeWidget;
     GridSelectionWidget<GridSelectionClothingElement> gridSelectionItemWidget;
 
-    private List<GridSelectionWidget<?>> gridSelectionWidgets;
+    private SimpleImageButton backButton;
+    private SimpleImageButton clearButton;
 
-    public boolean selectedType = false;
+    private String activeType = "";
 
     public ClothingSelectionScreen() {
         super(Component.literal("Clothing Selection"));
@@ -31,12 +33,21 @@ public class ClothingSelectionScreen extends Screen {
     @Override
     protected void init() {
         this.gridSelectionTypeWidget = new GridSelectionWidget<>(this.width / 2 - 25, this.height / 2 - 100, 150, 200, 3, Component.literal("Clothing Selection"), this);
-        this.gridSelectionItemWidget = new GridSelectionWidget<>(this.width / 2 - 25, this.height / 2 - 100, 150, 200, 3, Component.literal("Clothing Items"), this);
-        this.gridSelectionWidgets = List.of(this.gridSelectionTypeWidget, this.gridSelectionItemWidget);
+        this.gridSelectionItemWidget = new GridSelectionWidget<>(this.width / 2 - 25, this.height / 2 - 77, 150, 177, 3, Component.literal("Clothing Items"), this);
         List<String> type = ClothingRegistry.getInstance().getClothingTypes();
         List<GridSelectionClothingType> clothingTypes = type.stream().map(GridSelectionClothingType::new).toList();
         this.gridSelectionTypeWidget.setItems(clothingTypes);
         this.addRenderableWidget(this.gridSelectionTypeWidget);
+
+        this.clearButton = new SimpleImageButton(this.width / 2 + 51, this.height / 2 - 100, 74, 20, Component.literal("Clear"), ResourceLocation.parse("minecraft:pending_invite/reject"), () -> {
+            PacketDistributor.sendToServer(
+                    new SetClothingPayload(activeType, "")
+            );
+        });
+
+        this.backButton = new SimpleImageButton(this.width / 2 - 25, this.height / 2 - 100, 73, 20, Component.literal("Back"), ResourceLocation.parse("minecraft:pending_invite/accept"), () -> {
+            setActive("");
+        });
     }
 
     @Override
@@ -54,9 +65,19 @@ public class ClothingSelectionScreen extends Screen {
         }
     }
 
-    public void setActive(GridSelectionWidget<GridSelectionClothingElement> gridSelectionItemWidget) {
-        gridSelectionWidgets.forEach(this::removeWidget);
-        addRenderableWidget(gridSelectionItemWidget);
-        this.gridSelectionItemWidget = gridSelectionItemWidget;
+    public void setActive(String type) {
+        if (type.isBlank()) {
+            this.activeType = "";
+            addRenderableWidget(this.gridSelectionTypeWidget);
+            removeWidget(this.gridSelectionItemWidget);
+            removeWidget(this.clearButton);
+            removeWidget(this.backButton);
+        }else {
+            this.activeType = type;
+            addRenderableWidget(this.gridSelectionItemWidget);
+            addRenderableWidget(this.clearButton);
+            addRenderableWidget(this.backButton);
+            removeWidget(this.gridSelectionTypeWidget);
+        }
     }
 }

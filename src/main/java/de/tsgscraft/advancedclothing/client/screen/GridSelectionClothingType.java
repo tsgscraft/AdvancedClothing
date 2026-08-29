@@ -24,7 +24,7 @@ public class GridSelectionClothingType extends GridSelectionItem<GridSelectionCl
         List<ClothingElement> clothingElements = ClothingRegistry.getInstance().getClothingTypeToElementMap().get(clothingType);
         List<GridSelectionClothingElement> clothingElementItems = clothingElements.stream().map(GridSelectionClothingElement::new).toList();
         screen.gridSelectionItemWidget.setItems(clothingElementItems);
-        screen.setActive(screen.gridSelectionItemWidget);
+        screen.setActive(clothingType);
     }
 
     @Override
