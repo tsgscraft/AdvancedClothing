@@ -11,6 +11,12 @@ import java.util.List;
 
 public class ClothingSelectionScreen extends Screen {
 
+    //TODO: Add a back button to go back to the previous screen
+    //TODO: Add a button to clear the current clothing type
+    //TODO: Highlight the selected clothing items
+    //TODO: Add a keybinding to open the clothing selection screen
+    //TODO: Sort the active clothing types at the top of the list
+
     private GridSelectionWidget<GridSelectionClothingType> gridSelectionTypeWidget;
     GridSelectionWidget<GridSelectionClothingElement> gridSelectionItemWidget;
 

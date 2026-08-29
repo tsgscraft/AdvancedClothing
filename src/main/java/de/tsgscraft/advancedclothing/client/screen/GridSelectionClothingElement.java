@@ -16,7 +16,7 @@ public class GridSelectionClothingElement extends GridSelectionItem<GridSelectio
 
     @Override
     public void onClick(double x, double y, int button, ClothingSelectionScreen screen) {
-
+        // TODO: Implement what happens when a clothing element is clicked.
     }
 
     @Override
