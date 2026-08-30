@@ -103,6 +103,14 @@ public class AnchorLayerRender extends RenderLayer<AbstractClientPlayer, PlayerM
         if (((PlayerModelAccessor) parent).isSlim()) {
             layer.copyPropertiesTo(slimLayer);
             slimLayer.swimAmount = layer.swimAmount;
+            slimLayer.setupAnim(
+                    entity,
+                    limbSwing,
+                    limbSwingAmount,
+                    age,
+                    headYaw,
+                    headPitch
+            );
 
             slimLayer.renderToBuffer(
                     poseStack,

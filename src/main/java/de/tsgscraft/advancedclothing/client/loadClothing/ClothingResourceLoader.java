@@ -27,8 +27,6 @@ import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 
-import static com.mojang.text2speech.Narrator.LOGGER;
-
 public class ClothingResourceLoader implements PreparableReloadListener {
 
     @Override
@@ -82,7 +80,7 @@ public class ClothingResourceLoader implements PreparableReloadListener {
                     ResourceLocation clothingDataLocation = ResourceLocation.parse(element.getAsString());
                     Resource data = resourceManager.getResource(clothingDataLocation).orElse(null);
                     if (data == null) {
-                        LOGGER.warn("Failed to find clothing data for location: {}", clothingDataLocation);
+                        AdvancedClothing.LOGGER.warn("Failed to find clothing data for location: {}", clothingDataLocation);
                         continue;
                     }
                     try (Reader infoReader = data.openAsReader()) {
@@ -119,7 +117,7 @@ public class ClothingResourceLoader implements PreparableReloadListener {
 
                         result.add(new ClothingElement(new ClothingRendering(modelData, slimModelData), new ClothingModifiers(clothingJson.has("modifiers") ? clothingJson.get("modifiers").getAsJsonObject() : new JsonObject()), clothingName, clothingType.toString(), clothingDataLocation));
                     } catch (Exception e) {
-                        LOGGER.error(
+                        AdvancedClothing.LOGGER.error(
                                 "Failed to load model {} from resource pack {}",
                                 clothingDataLocation,
                                 data.sourcePackId(),
@@ -128,7 +126,7 @@ public class ClothingResourceLoader implements PreparableReloadListener {
                     }
                 }
             } catch (Exception e) {
-                LOGGER.error(
+                AdvancedClothing.LOGGER.error(
                         "Failed to load {} from resource pack {}",
                         location,
                         resource.sourcePackId(),
@@ -169,16 +167,29 @@ public class ClothingResourceLoader implements PreparableReloadListener {
         for (int i = 0; i < anchors.size(); i++) {
             JsonObject anchorObject = anchors.get(i).getAsJsonObject();
             String anchorName = anchorObject.get("anchor").getAsString();
-            JsonArray offsetArray = anchorObject.getAsJsonArray("offset");
-            float offsetX = offsetArray.get(0).getAsFloat();
-            float offsetY = offsetArray.get(1).getAsFloat();
-            float offsetZ = offsetArray.get(2).getAsFloat();
-            ClothingAnchorInfo anchorInfo = new ClothingAnchorInfo(
-                    ResourceLocation.parse(anchorName),
-                    offsetX,
-                    offsetY,
-                    offsetZ
-            );
+            ClothingAnchorInfo anchorInfo;
+            float offsetX = 0;
+            float offsetY = 0;
+            float offsetZ = 0;
+            if (anchorObject.has("offset")) {
+                JsonArray offsetArray = anchorObject.getAsJsonArray("offset");
+                offsetX = offsetArray.get(0).getAsFloat();
+                offsetY = offsetArray.get(1).getAsFloat();
+                offsetZ = offsetArray.get(2).getAsFloat();
+                anchorInfo = new ClothingAnchorInfo(
+                        ResourceLocation.parse(anchorName),
+                        offsetX,
+                        offsetY,
+                        offsetZ
+                );
+            }else {
+                anchorInfo = new ClothingAnchorInfo(
+                        ResourceLocation.parse(anchorName),
+                        0,
+                        0,
+                        0
+                );
+            }
             JsonArray elements = anchorObject.getAsJsonArray("elements");
             CubeListBuilder cubeListBuilder = CubeListBuilder.create(anchorInfo);
             for (int j = 0; j < elements.size(); j++) {

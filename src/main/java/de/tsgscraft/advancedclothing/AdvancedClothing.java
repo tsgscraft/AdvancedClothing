@@ -17,6 +17,9 @@ import org.slf4j.Logger;
 @Mod(REFERENCE.MODID)
 public class AdvancedClothing {
 
+    // TODO: Better parsing of clothing models (some parts should be optional)
+    // TODO: Better handling of error when loading a clothing model (currently it just crashes the game)
+
     public static final Logger LOGGER = LogUtils.getLogger();
 
     private static IEventBus modEventBus;
