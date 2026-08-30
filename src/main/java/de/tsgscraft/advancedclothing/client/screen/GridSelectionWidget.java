@@ -85,11 +85,21 @@ public class GridSelectionWidget<T extends GridSelectionItem<T>> extends Abstrac
     }
 
     public void setItems(List<T> items) {
-        this.items = items;
+        if (!items.isEmpty()) {
+            this.items = items.getFirst().sortItems(items);
+        } else {
+            this.items = items;
+        }
     }
 
     public List<T> getItems() {
         return this.items;
+    }
+
+    public void sort() {
+        if (items != null && !items.isEmpty()) {
+            this.items = items.getFirst().sortItems(items);
+        }
     }
 
     @Override

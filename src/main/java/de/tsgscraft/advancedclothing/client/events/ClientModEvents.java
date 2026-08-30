@@ -1,11 +1,15 @@
 package de.tsgscraft.advancedclothing.client.events;
 
+import com.wildfire.gui.screen.WardrobeBrowserScreen;
 import de.tsgscraft.advancedclothing.REFERENCE;
 import de.tsgscraft.advancedclothing.attachments.ClothingAttachments;
 import de.tsgscraft.advancedclothing.client.ClothingRegistry;
 import de.tsgscraft.advancedclothing.client.render.AnchorLayer;
 import de.tsgscraft.advancedclothing.client.render.AnchorLayerRender;
+import de.tsgscraft.advancedclothing.client.screen.ClothingSelectionScreen;
 import de.tsgscraft.advancedclothing.network.SetClothingPayload;
+import net.minecraft.client.KeyMapping;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.resources.ResourceLocation;
@@ -14,9 +18,11 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
+import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
+import org.lwjgl.glfw.GLFW;
 
 import java.util.HashMap;
 import java.util.List;
@@ -25,6 +31,25 @@ import java.util.Map;
 @SuppressWarnings("removal")
 @EventBusSubscriber(modid = REFERENCE.MODID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class ClientModEvents {
+
+    public static final KeyMapping toggleEditGUI = new KeyMapping("key.advancedclothing.clothing_selection_gui", GLFW.GLFW_KEY_U, "category.advancedclothing.generic") {
+
+        @Override
+        public void setDown(boolean value) {
+            if (value && !isDown()) {
+                Minecraft minecraft = Minecraft.getInstance();
+                if (minecraft.screen == null && minecraft.player != null) {
+                    minecraft.setScreen(new ClothingSelectionScreen());
+                }
+            }
+            super.setDown(value);
+        }
+    };
+
+    @SubscribeEvent
+    public static void registerKeyMappings(RegisterKeyMappingsEvent event) {
+        event.register(toggleEditGUI);
+    }
 
     @SubscribeEvent
     public static void registerPayloads(RegisterPayloadHandlersEvent event) {

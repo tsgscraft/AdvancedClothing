@@ -1,4 +1,6 @@
 {
   "advancedclothing.type.advancedclothing.hat": "Top Hat",
-  "clothing.hat.tophat": "Top Hat"
+  "clothing.hat.tophat": "Top Hat",
+  "key.advancedclothing.clothing_selection_gui": "Open Clothing Selection Screen",
+  "category.advancedclothing.generic": "Advanced Clothing"
 }

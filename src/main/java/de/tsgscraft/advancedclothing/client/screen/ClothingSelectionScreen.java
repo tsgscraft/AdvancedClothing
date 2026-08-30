@@ -14,10 +14,6 @@ import java.util.List;
 
 public class ClothingSelectionScreen extends Screen {
 
-    //TODO: Highlight the selected clothing items
-    //TODO: Add a keybinding to open the clothing selection screen
-    //TODO: Sort the active clothing types at the top of the list
-
     private GridSelectionWidget<GridSelectionClothingType> gridSelectionTypeWidget;
     GridSelectionWidget<GridSelectionClothingElement> gridSelectionItemWidget;
 
@@ -39,13 +35,13 @@ public class ClothingSelectionScreen extends Screen {
         this.gridSelectionTypeWidget.setItems(clothingTypes);
         this.addRenderableWidget(this.gridSelectionTypeWidget);
 
-        this.clearButton = new SimpleImageButton(this.width / 2 + 51, this.height / 2 - 100, 74, 20, Component.literal("Clear"), ResourceLocation.parse("minecraft:pending_invite/reject"), () -> {
+        this.clearButton = new SimpleImageButton(this.width / 2 + 51, this.height / 2 - 100, 74, 20, Component.literal("Clear"), ResourceLocation.parse("advancedclothing:none"), () -> {
             PacketDistributor.sendToServer(
                     new SetClothingPayload(activeType, "")
             );
         });
 
-        this.backButton = new SimpleImageButton(this.width / 2 - 25, this.height / 2 - 100, 73, 20, Component.literal("Back"), ResourceLocation.parse("minecraft:pending_invite/accept"), () -> {
+        this.backButton = new SimpleImageButton(this.width / 2 - 25, this.height / 2 - 100, 73, 20, Component.literal("Back"), ResourceLocation.parse("advancedclothing:back"), () -> {
             setActive("");
         });
     }
@@ -72,6 +68,7 @@ public class ClothingSelectionScreen extends Screen {
             removeWidget(this.gridSelectionItemWidget);
             removeWidget(this.clearButton);
             removeWidget(this.backButton);
+            gridSelectionTypeWidget.sort();
         }else {
             this.activeType = type;
             addRenderableWidget(this.gridSelectionItemWidget);

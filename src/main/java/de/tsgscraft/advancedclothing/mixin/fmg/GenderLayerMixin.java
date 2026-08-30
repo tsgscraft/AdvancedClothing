@@ -196,8 +196,7 @@ public class GenderLayerMixin<ENTITY extends LivingEntity, MODEL extends Humanoi
         } else if (hasJacketLayer) {//Copy exact size
             shiftForJacket(matrixStack);
         }
-        //TODO: Eventually we may want to expose a way via the API for mods to be able to override rendering
-        // be it because they are not an armor item or the way they render their armor item is custom
+
         //Render Breast Armor
         if (!armorStack.isEmpty() && armorStack.getItem() instanceof ArmorItem armorItem) {
             matrixStack.pushPose();
