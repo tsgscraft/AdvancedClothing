@@ -1,5 +1,6 @@
 package de.tsgscraft.advancedclothing.mixin;
 
+import com.llamalad7.mixinextras.sugar.Local;
 import com.mojang.blaze3d.vertex.PoseStack;
 import de.tsgscraft.advancedclothing.Config;
 import de.tsgscraft.advancedclothing.REFERENCE;
@@ -18,6 +19,7 @@ import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(PlayerRenderer.class)
@@ -30,23 +32,20 @@ public abstract class PlayerRendererMixin extends LivingEntityRenderer<AbstractC
     @Shadow
     private void setModelProperties(AbstractClientPlayer p_117775_) {}
 
-    /**
-     * @author tsgscraft
-     * @reason Fixes the hand rendering for custom skins
-     */
-    @Overwrite
-    private void renderHand(PoseStack p_117776_, MultiBufferSource p_117777_, int p_117778_, AbstractClientPlayer p_117779_, ModelPart p_117780_, ModelPart p_117781_) {
-        PlayerModel<AbstractClientPlayer> playermodel = (PlayerModel)this.getModel();
-        this.setModelProperties(p_117779_);
-        playermodel.attackTime = 0.0F;
-        playermodel.crouching = false;
-        playermodel.swimAmount = 0.0F;
-        playermodel.setupAnim(p_117779_, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F);
-        p_117780_.xRot = 0.0F;
-        ResourceLocation resourcelocation = (Config.customSkin && REFERENCE.isCurrentPlayer(p_117779_.getUUID())) ? REFERENCE.customSkin : p_117779_.getSkin().texture();
-        p_117780_.render(p_117776_, p_117777_.getBuffer(RenderType.entitySolid(resourcelocation)), p_117778_, OverlayTexture.NO_OVERLAY);
-        p_117781_.xRot = 0.0F;
-        p_117781_.render(p_117776_, p_117777_.getBuffer(RenderType.entityTranslucent(resourcelocation)), p_117778_, OverlayTexture.NO_OVERLAY);
+    @ModifyVariable(
+            method = "renderHand",
+            at = @At("STORE"),
+            ordinal = 0
+    )
+    private ResourceLocation modifyHandTexture(
+            ResourceLocation original,
+            @Local(argsOnly = true) AbstractClientPlayer player
+    ) {
+        if (Config.customSkin && REFERENCE.isCurrentPlayer(player.getUUID())) {
+            return REFERENCE.customSkin;
+        }
+
+        return original;
     }
 
     @Inject(

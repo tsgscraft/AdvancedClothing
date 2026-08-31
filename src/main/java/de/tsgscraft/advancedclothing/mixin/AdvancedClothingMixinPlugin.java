@@ -2,6 +2,7 @@ package de.tsgscraft.advancedclothing.mixin;
 
 import de.tsgscraft.advancedclothing.REFERENCE;
 import net.neoforged.fml.ModList;
+import net.neoforged.fml.loading.LoadingModList;
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
@@ -9,10 +10,14 @@ import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
 import java.util.List;
 import java.util.Set;
 
-public class SlimArmorMixinPlugin implements IMixinConfigPlugin {
+public class AdvancedClothingMixinPlugin implements IMixinConfigPlugin {
+
+    private boolean fmgModLoaded;
+
     @Override
     public void onLoad(String mixinPackage) {
-
+        fmgModLoaded = LoadingModList.get().getModFileById(REFERENCE.fmg_MODID) != null;
+        System.out.println("FMG mod loaded: " + fmgModLoaded);
     }
 
     @Override
@@ -22,8 +27,9 @@ public class SlimArmorMixinPlugin implements IMixinConfigPlugin {
 
     @Override
     public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
-        if (targetClassName.equals("de.tsgscraft.slimarmor.mixin.fmg")) {
-            return ModList.get().isLoaded(REFERENCE.fmg_MODID);
+        System.out.println("Checking if mixin should be applied: " + mixinClassName + " for target class: " + targetClassName);
+        if (mixinClassName.equals("de.tsgscraft.advancedclothing.mixin.fmg.GenderLayerMixin")) {
+            return fmgModLoaded;
         }
         return true;
     }

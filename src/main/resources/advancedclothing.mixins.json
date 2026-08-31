@@ -16,5 +16,5 @@
   "overwrites": {
     "requireAnnotations": true
   },
-  "plugin": "de.tsgscraft.advancedclothing.mixin.SlimArmorMixinPlugin"
+  "plugin": "de.tsgscraft.advancedclothing.mixin.AdvancedClothingMixinPlugin"
 }

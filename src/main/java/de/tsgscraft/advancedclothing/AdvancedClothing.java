@@ -19,6 +19,7 @@ public class AdvancedClothing {
 
     // TODO: Better parsing of clothing models (some parts should be optional)
     // TODO: Better handling of error when loading a clothing model (currently it just crashes the game)
+    // TODO: Add a way to disable the mod for players that don't want to use it (e.g. a config option to disable the mod)
 
     public static final Logger LOGGER = LogUtils.getLogger();
 
