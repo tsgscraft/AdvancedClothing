@@ -77,4 +77,9 @@ public class ClothingSelectionScreen extends Screen {
             removeWidget(this.gridSelectionTypeWidget);
         }
     }
+
+    @Override
+    public boolean isPauseScreen() {
+        return false;
+    }
 }

@@ -10,6 +10,7 @@ import net.neoforged.neoforge.common.ModConfigSpec;
 public class Config {
     private static final ModConfigSpec.Builder BUILDER = new ModConfigSpec.Builder();
 
+    private static final ModConfigSpec.BooleanValue ENABLED = BUILDER.comment("Whether the mod is enabled").define("enabled", true);
     private static final ModConfigSpec.BooleanValue CUSTOM_SKIN = BUILDER.comment("Whether to use a custom skin for the player (use a resource pack ('/textures/skin/own.png'))").define("customSkin", false);
     private static final ModConfigSpec.BooleanValue DEBUG = BUILDER.comment("Whether to enable debug mode").define("debug", false);
     private static final ModConfigSpec.BooleanValue DEBUG_SKIN = BUILDER.comment("Whether to hide the base").define("debugSkin", false);
@@ -19,6 +20,7 @@ public class Config {
 
     static final ModConfigSpec SPEC = BUILDER.build();
 
+    public static boolean enabled = true;
     public static boolean customSkin = false;
     public static boolean debug = false;
     public static boolean debugSkin = false;
@@ -28,6 +30,7 @@ public class Config {
 
     @SubscribeEvent
     static void onLoad(final ModConfigEvent event) {
+        enabled = ENABLED.get();
         customSkin = CUSTOM_SKIN.get();
         debug = DEBUG.get();
         debugSkin = DEBUG_SKIN.get();

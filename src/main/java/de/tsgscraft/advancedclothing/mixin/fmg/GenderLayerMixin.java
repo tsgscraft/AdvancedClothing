@@ -113,33 +113,35 @@ public class GenderLayerMixin<ENTITY extends LivingEntity, MODEL extends Humanoi
             if (hasJacketLayer) {
                 shiftForJacket(matrixStack);
                 // Apply any modifier values for the breast wear
-                Map<String, String> clothingData = entity.getData(ClothingAttachments.CLOTHING_DATA);
+                if (Config.enabled) {
+                    Map<String, String> clothingData = entity.getData(ClothingAttachments.CLOTHING_DATA);
 
-                List<ClothingElement> clothingElements = ClothingRegistry.getInstance().getClothingElements().stream()
-                        .filter(clothingElement -> clothingData.containsValue(clothingElement.id().toString()))
-                        .toList();
+                    List<ClothingElement> clothingElements = ClothingRegistry.getInstance().getClothingElements().stream()
+                            .filter(clothingElement -> clothingData.containsValue(clothingElement.id().toString()))
+                            .toList();
 
-                PlayerRenderer renderer = (PlayerRenderer) Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(entity);
-                clothingElements.forEach(clothingElement -> {
-                    if (clothingElement.renderInfo() != null) {
-                        clothingElement.renderInfo().compile(
-                                matrixStack,
-                                bufferSource,
-                                light,
-                                overlay,
-                                -1,
-                                renderer.getModel(),
-                                (AbstractClientPlayer) entity,
-                                left ? "lboob" : "rboob",
-                                false
-                        );
-                    }
-                });
-                Map<String, ModelPartModifiers> modifiers = AnchorLayerRender.playerModifiers.get(entity.getUUID());
-                if (modifiers != null) {
-                    ModelPartModifiers modifier = modifiers.get(left ? "lboob" : "rboob");
-                    if (modifier != null) {
-                        modifier.applyTo(matrixStack);
+                    PlayerRenderer renderer = (PlayerRenderer) Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(entity);
+                    clothingElements.forEach(clothingElement -> {
+                        if (clothingElement.renderInfo() != null) {
+                            clothingElement.renderInfo().compile(
+                                    matrixStack,
+                                    bufferSource,
+                                    light,
+                                    overlay,
+                                    -1,
+                                    renderer.getModel(),
+                                    (AbstractClientPlayer) entity,
+                                    left ? "lboob" : "rboob",
+                                    false
+                            );
+                        }
+                    });
+                    Map<String, ModelPartModifiers> modifiers = AnchorLayerRender.playerModifiers.get(entity.getUUID());
+                    if (modifiers != null) {
+                        ModelPartModifiers modifier = modifiers.get(left ? "lboob" : "rboob");
+                        if (modifier != null) {
+                            modifier.applyTo(matrixStack);
+                        }
                     }
                 }
                 vertexConsumer = bufferSource.getBuffer(breastRenderType);
@@ -148,8 +150,7 @@ public class GenderLayerMixin<ENTITY extends LivingEntity, MODEL extends Humanoi
         } else if (hasJacketLayer) {//Copy exact size
             shiftForJacket(matrixStack);
         }
-        //TODO: Eventually we may want to expose a way via the API for mods to be able to override rendering
-        // be it because they are not an armor item or the way they render their armor item is custom
+
         //Render Breast Armor
         if (!armorStack.isEmpty() && armorStack.getItem() instanceof ArmorItem armorItem) {
             matrixStack.pushPose();

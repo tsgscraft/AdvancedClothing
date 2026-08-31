@@ -47,6 +47,7 @@ public class AnchorLayerRender extends RenderLayer<AbstractClientPlayer, PlayerM
 
     @Override
     public void render(PoseStack poseStack, MultiBufferSource buffer, int light, AbstractClientPlayer entity, float limbSwing, float limbSwingAmount, float partialTicks, float age, float headYaw, float headPitch) {
+        if (!Config.enabled) return;
         PlayerModel<AbstractClientPlayer> parent = this.getParentModel();
         parent.copyPropertiesTo(layer);
         layer.swimAmount = parent.swimAmount;

@@ -23,6 +23,7 @@ import java.util.Map;
 public class NeoForgeEvents {
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void onRenderPlayer(RenderPlayerEvent.Pre event) {
+        if (!Config.enabled) return;
         PlayerModel<AbstractClientPlayer> model = event.getRenderer().getModel();
         if (Config.debugSkin)
             model.setAllVisible(false);
