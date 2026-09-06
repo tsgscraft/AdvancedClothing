@@ -1,6 +1,7 @@
 package de.tsgscraft.advancedclothing.client.modifiers;
 
 import com.google.gson.JsonObject;
+import de.tsgscraft.advancedclothing.Config;
 import de.tsgscraft.advancedclothing.client.render.AnchorLayer;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.player.AbstractClientPlayer;
@@ -73,5 +74,22 @@ public class ClothingModifiers {
             layer.leftPants.visible = false;
         if (secondLayerRightLegModifier != null && secondLayerRightLegModifier.isModifying())
             layer.rightPants.visible = false;
+        if (Config.debugModifiers) {
+            System.out.println("Applied ClothingModifiers to AnchorLayer: " + this.toString());
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "ClothingModifiers{" +
+                "secondLayerHeadModifier=" + secondLayerHeadModifier +
+                ", secondLayerBodyModifier=" + secondLayerBodyModifier +
+                ", secondLayerLeftArmModifier=" + secondLayerLeftArmModifier +
+                ", secondLayerRightArmModifier=" + secondLayerRightArmModifier +
+                ", secondLayerLeftLegModifier=" + secondLayerLeftLegModifier +
+                ", secondLayerRightLegModifier=" + secondLayerRightLegModifier +
+                ", secondLayerLboobModifier=" + secondLayerLboobModifier +
+                ", secondLayerRboobModifier=" + secondLayerRboobModifier +
+                '}';
     }
 }

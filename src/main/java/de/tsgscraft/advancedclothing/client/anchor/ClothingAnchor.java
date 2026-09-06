@@ -24,4 +24,6 @@ public abstract class ClothingAnchor {
             Player player,
             ClothingAnchorInfo info
     );
+
+    public abstract boolean isEnabled(Player player, HumanoidModel<?> model, ClothingAnchorInfo info);
 }

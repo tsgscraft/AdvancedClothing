@@ -2,6 +2,8 @@ package de.tsgscraft.advancedclothing;
 
 import de.tsgscraft.advancedclothing.compat.FirstPersonMod;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.fml.ModList;
 
@@ -30,10 +32,15 @@ public class REFERENCE {
     public static boolean skipHead = false;
     public static void updateFirstPerson() {
         skipHead = false;
+        LocalPlayer player = Minecraft.getInstance().player;
 
         if (ModList.get().isLoaded(fp_MODID)) {
             skipHead = FirstPersonMod.shouldSkipHead();
-        }
+            if (Config.debugFirstPerson)
+                player.sendSystemMessage(Component.literal("First Person Mod detected. Skip head: " + skipHead));
+        }else if (Config.debugFirstPerson)
+            player.sendSystemMessage(Component.literal("First Person Mod not found."));
+
     }
 
 

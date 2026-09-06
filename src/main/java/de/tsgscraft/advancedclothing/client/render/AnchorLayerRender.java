@@ -19,6 +19,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
+import net.minecraft.network.chat.Component;
 
 import java.util.HashMap;
 import java.util.List;
@@ -84,13 +85,14 @@ public class AnchorLayerRender extends RenderLayer<AbstractClientPlayer, PlayerM
                 );
             }
             Map<String, ModelPartModifiers> extraModifiers = new HashMap<>();
+            boolean headBefore = layer.hat.visible;
             if (clothingElement.modifiers() != null) {
                 clothingElement.modifiers().configureSecondLayer(layer, extraModifiers);
             }
+            if (Config.debugModifiers)
+                entity.sendSystemMessage(Component.literal("headBefore: " + headBefore + " | headAfter: " + layer.hat.visible));
             playerModifiers.put(entity.getUUID(), extraModifiers);
         });
-
-        checkFirstPerson(entity, layer);
 
         if (Config.onlyBreasts) {
             return;
@@ -103,6 +105,7 @@ public class AnchorLayerRender extends RenderLayer<AbstractClientPlayer, PlayerM
 
         if (((PlayerModelAccessor) parent).isSlim()) {
             layer.copyPropertiesTo(slimLayer);
+            copyVisibility(layer, slimLayer);
             slimLayer.swimAmount = layer.swimAmount;
             slimLayer.setupAnim(
                     entity,
@@ -113,6 +116,7 @@ public class AnchorLayerRender extends RenderLayer<AbstractClientPlayer, PlayerM
                     headPitch
             );
 
+            checkFirstPerson(entity, slimLayer);
             slimLayer.renderToBuffer(
                     poseStack,
                     vertexConsumer,
@@ -120,6 +124,7 @@ public class AnchorLayerRender extends RenderLayer<AbstractClientPlayer, PlayerM
                     overlay
             );
         } else {
+            checkFirstPerson(entity, layer);
             layer.renderToBuffer(
                     poseStack,
                     vertexConsumer,
@@ -131,11 +136,31 @@ public class AnchorLayerRender extends RenderLayer<AbstractClientPlayer, PlayerM
 
     public static void checkFirstPerson(AbstractClientPlayer player, AnchorLayer model) {
         REFERENCE.updateFirstPerson();
+        if (Config.debugFirstPerson) {
+            player.sendSystemMessage(
+                    Component.literal("player: " + player.getName().getString() + " | skipHead: " + REFERENCE.skipHead)
+            );
+        }
         if (Minecraft.getInstance().player == player) {
             if (REFERENCE.skipHead) {
                 model.head.visible = false;
                 model.hat.visible = false;
             }
         }
+    }
+
+    private void copyVisibility(AnchorLayer source, AnchorLayer target) {
+        target.head.visible = source.head.visible;
+        target.hat.visible = source.hat.visible;
+        target.body.visible = source.body.visible;
+        target.jacket.visible = source.jacket.visible;
+        target.leftArm.visible = source.leftArm.visible;
+        target.leftSleeve.visible = source.leftSleeve.visible;
+        target.rightArm.visible = source.rightArm.visible;
+        target.rightSleeve.visible = source.rightSleeve.visible;
+        target.leftLeg.visible = source.leftLeg.visible;
+        target.leftPants.visible = source.leftPants.visible;
+        target.rightLeg.visible = source.rightLeg.visible;
+        target.rightPants.visible = source.rightPants.visible;
     }
 }

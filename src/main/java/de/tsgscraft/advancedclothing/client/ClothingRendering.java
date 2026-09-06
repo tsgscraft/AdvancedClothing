@@ -6,9 +6,9 @@ import de.tsgscraft.advancedclothing.Config;
 import de.tsgscraft.advancedclothing.client.anchor.Anchors;
 import de.tsgscraft.advancedclothing.client.anchor.ClothingAnchor;
 import de.tsgscraft.advancedclothing.client.anchor.ClothingAnchorInfo;
-import de.tsgscraft.advancedclothing.client.loadClothing.CubeDefinition;
-import de.tsgscraft.advancedclothing.client.loadClothing.Model;
-import de.tsgscraft.advancedclothing.client.loadClothing.ModelCube;
+import de.tsgscraft.advancedclothing.client.simpleClothing.CubeDefinition;
+import de.tsgscraft.advancedclothing.client.simpleClothing.Model;
+import de.tsgscraft.advancedclothing.client.simpleClothing.ModelCube;
 import de.tsgscraft.advancedclothing.mixin.PlayerModelAccessor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -109,6 +109,7 @@ public class ClothingRendering {
             ClothingAnchorInfo info = entry.getKey();
             ClothingAnchor anchor = Anchors.getAnchor(info);
             poseStack.pushPose();
+            boolean enabled = true;
             if (anchor != null) {
                 if (!anchor.renderKey().equals(renderKey) && !anchor.renderKey().equals("all")) {
                     poseStack.popPose();
@@ -119,12 +120,15 @@ public class ClothingRendering {
                         anchor.transformForInventory(poseStack, model, player, info);
                     }else {
                         anchor.transform(poseStack, model, player, info);
+                        enabled = anchor.isEnabled(player, model, info);
                     }
                 }
                 poseStack.scale(1, -1, 1);
                 poseStack.translate(info.getAnchorOffsetX()/16.0F, info.getAnchorOffsetY()/16.0F, info.getAnchorOffsetZ()/16.0F);
             }
-            entry.getValue().compile(poseStack.last(), buffer, packedLight, packedOverlay, color);
+            if (enabled) {
+                entry.getValue().compile(poseStack.last(), buffer, packedLight, packedOverlay, color);
+            }
             poseStack.popPose();
         }
     }

@@ -91,4 +91,20 @@ public class ModelPartModifiers {
     public boolean isModifying() {
         return modified;
     }
+
+    @Override
+    public String toString() {
+        return "ModelPartModifiers{" +
+                "modified=" + modified +
+                ", modifiedOffset=" + modifiedOffset +
+                ", xOffset=" + xOffset +
+                ", yOffset=" + yOffset +
+                ", zOffset=" + zOffset +
+                ", modifiedScale=" + modifiedScale +
+                ", xScale=" + xScale +
+                ", yScale=" + yScale +
+                ", zScale=" + zScale +
+                ", isVisible=" + isVisible +
+                '}';
+    }
 }

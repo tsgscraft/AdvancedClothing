@@ -1,4 +1,4 @@
-package de.tsgscraft.advancedclothing.client.loadClothing;
+package de.tsgscraft.advancedclothing.client.simpleClothing;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;

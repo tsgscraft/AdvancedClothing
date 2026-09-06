@@ -1,4 +1,4 @@
-package de.tsgscraft.advancedclothing.client.loadClothing;
+package de.tsgscraft.advancedclothing.client.simpleClothing;
 
 import net.minecraft.resources.ResourceLocation;
 

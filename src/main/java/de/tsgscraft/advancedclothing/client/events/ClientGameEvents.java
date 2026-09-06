@@ -1,7 +1,7 @@
 package de.tsgscraft.advancedclothing.client.events;
 
 import de.tsgscraft.advancedclothing.REFERENCE;
-import de.tsgscraft.advancedclothing.client.loadClothing.ClothingResourceLoader;
+import de.tsgscraft.advancedclothing.client.simpleClothing.ClothingResourceLoader;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;

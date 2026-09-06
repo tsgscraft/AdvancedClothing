@@ -28,4 +28,9 @@ public class RBoobAnchor extends ClothingAnchor {
     public void transformForInventory(PoseStack poseStack, HumanoidModel<?> model, Player player, ClothingAnchorInfo info) {
 
     }
+
+    @Override
+    public boolean isEnabled(Player player, HumanoidModel<?> model, ClothingAnchorInfo info) {
+        return true;
+    }
 }

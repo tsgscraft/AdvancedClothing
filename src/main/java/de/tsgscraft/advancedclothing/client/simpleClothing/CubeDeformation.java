@@ -1,4 +1,4 @@
-package de.tsgscraft.advancedclothing.client.loadClothing;
+package de.tsgscraft.advancedclothing.client.simpleClothing;
 
 public class CubeDeformation {
     public static final CubeDeformation NONE = new CubeDeformation(0.0F);
