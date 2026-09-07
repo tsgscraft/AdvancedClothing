@@ -26,16 +26,16 @@ public class BodyAnchor extends ClothingAnchor {
     @Override
     public void transform(PoseStack poseStack, HumanoidModel<?> model, Player player, ClothingAnchorInfo info) {
         ModelPart body = model.body;
-        poseStack.translate(0, 0.75f, 0);
         body.translateAndRotate(poseStack);
+        poseStack.translate(0, 0.75f, 0);
     }
 
     @Override
     public void transformForInventory(PoseStack poseStack, HumanoidModel<?> model, Player player, ClothingAnchorInfo info) {
         poseStack.mulPose(new Quaternionf().rotateXYZ(0, (float) Math.toRadians(player.yBodyRot), 0));
         ModelPart body = model.body;
-        poseStack.translate(0, 0.75f, 0);
         body.translateAndRotate(poseStack);
+        poseStack.translate(0, 0.75f, 0);
     }
 
     @Override
