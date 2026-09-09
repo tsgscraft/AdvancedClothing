@@ -20,6 +20,9 @@ public class ModelPartModifiers {
 
     private boolean isVisible = true;
 
+    public ModelPartModifiers() {
+    }
+
     public ModelPartModifiers(float xOffset, float yOffset, float zOffset, float xScale, float yScale, float zScale, boolean isVisible) {
         this.xOffset = xOffset;
         this.yOffset = yOffset;
@@ -85,6 +88,48 @@ public class ModelPartModifiers {
         }
         if (modifiedScale) {
             stack.scale(xScale, yScale, zScale);
+        }
+    }
+
+    public void applyTo(ModelPartModifiers modelPartModifiers) {
+        if (modified) {
+            modelPartModifiers.modified = true;
+        }
+        if (modifiedOffset) {
+            modelPartModifiers.modifiedOffset = true;
+            modelPartModifiers.xOffset += xOffset;
+            modelPartModifiers.yOffset += yOffset;
+            modelPartModifiers.zOffset += zOffset;
+        }
+        if (modifiedScale) {
+            modelPartModifiers.modifiedScale = true;
+            modelPartModifiers.xScale *= xScale;
+            modelPartModifiers.yScale *= yScale;
+            modelPartModifiers.zScale *= zScale;
+        }
+        if (!isVisible) {
+            modelPartModifiers.isVisible = false;
+        }
+    }
+
+    public void combine(ModelPartModifiers modelPartModifiers) {
+        if (modelPartModifiers.modified) {
+            this.modified = true;
+        }
+        if (modelPartModifiers.modifiedOffset) {
+            this.modifiedOffset = true;
+            this.xOffset += modelPartModifiers.xOffset;
+            this.yOffset += modelPartModifiers.yOffset;
+            this.zOffset += modelPartModifiers.zOffset;
+        }
+        if (modelPartModifiers.modifiedScale) {
+            this.modifiedScale = true;
+            this.xScale *= modelPartModifiers.xScale;
+            this.yScale *= modelPartModifiers.yScale;
+            this.zScale *= modelPartModifiers.zScale;
+        }
+        if (!modelPartModifiers.isVisible) {
+            this.isVisible = false;
         }
     }
 

@@ -4,6 +4,7 @@
   "package": "de.tsgscraft.advancedclothing.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
+    "rd.RagdollPartBlockEntityRendererMixin"
   ],
   "client": [
     "PlayerModelAccessor",

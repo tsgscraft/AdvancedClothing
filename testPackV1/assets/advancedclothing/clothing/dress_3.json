@@ -2,6 +2,7 @@
   "name": "clothing.dress.dress_3",
   "type": "advancedclothing:dress",
   "slim_model": "advancedclothing:models/clothing/dress/player_model_slim.json",
+  "model": "advancedclothing:models/clothing/dress/player_model.json",
   "modifiers": {
     "second_layer": {
       "head": {

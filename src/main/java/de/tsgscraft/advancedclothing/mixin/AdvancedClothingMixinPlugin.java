@@ -13,11 +13,14 @@ import java.util.Set;
 public class AdvancedClothingMixinPlugin implements IMixinConfigPlugin {
 
     private boolean fmgModLoaded;
+    private boolean rdModLoaded;
 
     @Override
     public void onLoad(String mixinPackage) {
         fmgModLoaded = LoadingModList.get().getModFileById(REFERENCE.fmg_MODID) != null;
         System.out.println("FMG mod loaded: " + fmgModLoaded);
+        rdModLoaded = LoadingModList.get().getModFileById(REFERENCE.rd_MODID) != null;
+        System.out.println("RD mod loaded: " + rdModLoaded);
     }
 
     @Override
@@ -30,6 +33,9 @@ public class AdvancedClothingMixinPlugin implements IMixinConfigPlugin {
         System.out.println("Checking if mixin should be applied: " + mixinClassName + " for target class: " + targetClassName);
         if (mixinClassName.equals("de.tsgscraft.advancedclothing.mixin.fmg.GenderLayerMixin")) {
             return fmgModLoaded;
+        }
+        if (mixinClassName.equals("de.tsgscraft.advancedclothing.mixin.rd.RagdollPartBlockEntityRendererMixin")) {
+            return rdModLoaded;
         }
         return true;
     }

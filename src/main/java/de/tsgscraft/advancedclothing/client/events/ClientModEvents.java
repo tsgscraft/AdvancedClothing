@@ -4,6 +4,7 @@ import com.wildfire.gui.screen.WardrobeBrowserScreen;
 import de.tsgscraft.advancedclothing.REFERENCE;
 import de.tsgscraft.advancedclothing.attachments.ClothingAttachments;
 import de.tsgscraft.advancedclothing.client.ClothingRegistry;
+import de.tsgscraft.advancedclothing.client.modifiers.ClothingModifiers;
 import de.tsgscraft.advancedclothing.client.render.AnchorLayer;
 import de.tsgscraft.advancedclothing.client.render.AnchorLayerRender;
 import de.tsgscraft.advancedclothing.client.screen.ClothingSelectionScreen;

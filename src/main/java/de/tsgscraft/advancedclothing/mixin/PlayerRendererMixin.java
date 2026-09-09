@@ -1,21 +1,15 @@
 package de.tsgscraft.advancedclothing.mixin;
 
 import com.llamalad7.mixinextras.sugar.Local;
-import com.mojang.blaze3d.vertex.PoseStack;
 import de.tsgscraft.advancedclothing.Config;
 import de.tsgscraft.advancedclothing.REFERENCE;
 import net.minecraft.client.model.PlayerModel;
-import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.player.AbstractClientPlayer;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
-import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -41,6 +35,10 @@ public abstract class PlayerRendererMixin extends LivingEntityRenderer<AbstractC
             ResourceLocation original,
             @Local(argsOnly = true) AbstractClientPlayer player
     ) {
+        if (Config.debugSkinTexture) {
+            return REFERENCE.debugSkin;
+        }
+
         if (Config.customSkin && REFERENCE.isCurrentPlayer(player.getUUID())) {
             return REFERENCE.customSkin;
         }
@@ -54,7 +52,10 @@ public abstract class PlayerRendererMixin extends LivingEntityRenderer<AbstractC
             cancellable = true
     )
     public void getTextureLocation(AbstractClientPlayer player, CallbackInfoReturnable<ResourceLocation> cir) {
-        if (Config.customSkin && REFERENCE.isCurrentPlayer(player.getUUID())) {
+        if (Config.debugSkinTexture) {
+            cir.setReturnValue(REFERENCE.debugSkin);
+            cir.cancel();
+        }else if (Config.customSkin && REFERENCE.isCurrentPlayer(player.getUUID())) {
             cir.setReturnValue(REFERENCE.customSkin);
             cir.cancel();
         }

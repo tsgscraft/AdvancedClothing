@@ -50,6 +50,9 @@ public class GenderLayerMixin<ENTITY extends LivingEntity, MODEL extends Humanoi
     private @Nullable ResourceLocation getBreastTexture(ENTITY entity) {
         ResourceLocation var10000;
         if (entity instanceof AbstractClientPlayer player) {
+            if (Config.debugSkinTexture) {
+                return REFERENCE.debugSkin;
+            }
             if (player.getUUID().equals(Minecraft.getInstance().player.getUUID()) && Config.customSkin) {
                 return REFERENCE.customSkin;
             }
@@ -93,6 +96,9 @@ public class GenderLayerMixin<ENTITY extends LivingEntity, MODEL extends Humanoi
     @Shadow
     private static WildfireModelRenderer.BreastModelBox rBoobArmor;
 
+    @Shadow
+    private float preBreastOffsetZ;
+
     /**
      * @author tsgscraft
      * @reason fix armor texture
@@ -129,6 +135,7 @@ public class GenderLayerMixin<ENTITY extends LivingEntity, MODEL extends Humanoi
                                     light,
                                     overlay,
                                     -1,
+                                    renderer.getModel(),
                                     renderer.getModel(),
                                     (AbstractClientPlayer) entity,
                                     left ? "lboob" : "rboob",

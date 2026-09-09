@@ -23,16 +23,4 @@ public class Anchors {
     public static void registerAnchor(ClothingAnchor anchor) {
         ANCHORS.add(anchor);
     }
-
-    public static void transformAnchor(
-            PoseStack poseStack,
-            HumanoidModel<?> model,
-            Player player,
-            ClothingAnchorInfo info
-    ) {
-        ClothingAnchor anchor = getAnchor(info);
-        if (anchor != null) {
-            anchor.transform(poseStack, model, player, info);
-        }
-    }
 }

@@ -10,6 +10,48 @@ group = mod_group_id
 
 repositories {
     mavenLocal()
+
+    maven { url = 'https://maven.ryanhcode.dev/releases' }
+
+    exclusiveContent {
+        forRepository {
+            maven {
+                name = 'ParchmentMC'
+                url = 'https://maven.parchmentmc.org/'
+            }
+        }
+        filter { includeGroup('org.parchmentmc.data') }
+    }
+
+    maven {
+        name = 'NeoForge'
+        url = 'https://maven.neoforged.net/releases'
+    }
+
+    maven {
+        name = 'TheIllusiveC4'
+        url = 'https://maven.theillusivec4.top'
+    }
+
+    maven {
+        name = 'WispForest'
+        url = 'https://maven.wispforest.io/releases'
+    }
+
+    maven {
+        name = 'Modrinth'
+        url = 'https://api.modrinth.com/maven'
+    }
+
+    exclusiveContent {
+        forRepository {
+            maven {
+                name = 'Sponge'
+                url = 'https://repo.spongepowered.org/repository/maven-public'
+            }
+        }
+        filter { includeGroupAndSubgroups('org.spongepowered') }
+    }
 }
 
 base {
@@ -35,6 +77,14 @@ neoForge {
     runs {
         client {
             client()
+
+            // Comma-separated list of namespaces to load gametests from. Empty = all namespaces.
+            systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
+        }
+
+        client2 {
+            client()
+            devLogin = true
 
             // Comma-separated list of namespaces to load gametests from. Empty = all namespaces.
             systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
@@ -122,6 +172,17 @@ dependencies {
 
     compileOnly "dev.tr7zw:firstperson:neoforge-${firstperson_version}-mc${minecraft_version}"
     runtimeOnly "dev.tr7zw:firstperson:neoforge-${firstperson_version}-mc${minecraft_version}"
+
+    compileOnly "dev.leo.sableplayerragdoll:sable_player_ragdoll-${minecraft_version}:${ragdoll_version}"
+    runtimeOnly "dev.leo.sableplayerragdoll:sable_player_ragdoll-${minecraft_version}:${ragdoll_version}"
+
+    implementation("dev.ryanhcode.sable:sable-neoforge-${minecraft_version}:${sable_version}") {
+        exclude group: 'foundry.veil'
+        exclude group: 'com.simibubi.create'
+        exclude group: 'net.createmod.ponder'
+        exclude group: 'dev.engine-room.flywheel'
+        exclude group: 'com.tterrag.registrate'
+    }
 }
 
 // This block of code expands all declared replace properties in the specified resource targets.
@@ -141,7 +202,9 @@ var generateModMetadata = tasks.register("generateModMetadata", ProcessResources
                              fgm_version            : fgm_version,
                              fgm_version_range      : fgm_version_range,
                              firstperson_version    : firstperson_version,
-                             firstperson_version_range: firstperson_version_range
+                             firstperson_version_range: firstperson_version_range,
+                             ragdoll_version        : ragdoll_version,
+                             ragdoll_version_range  : ragdoll_version_range
     ]
     inputs.properties replaceProperties
     expand replaceProperties

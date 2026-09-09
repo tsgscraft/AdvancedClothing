@@ -6,6 +6,7 @@ import de.tsgscraft.advancedclothing.Config;
 import de.tsgscraft.advancedclothing.client.anchor.Anchors;
 import de.tsgscraft.advancedclothing.client.anchor.ClothingAnchor;
 import de.tsgscraft.advancedclothing.client.anchor.ClothingAnchorInfo;
+import de.tsgscraft.advancedclothing.client.render.AnchorLayer;
 import de.tsgscraft.advancedclothing.client.simpleClothing.CubeDefinition;
 import de.tsgscraft.advancedclothing.client.simpleClothing.Model;
 import de.tsgscraft.advancedclothing.client.simpleClothing.ModelCube;
@@ -80,7 +81,7 @@ public class ClothingRendering {
         return slimBakedCubesWithAnchor;
     }
 
-    public void compile(PoseStack poseStack, MultiBufferSource buffer, int packedLight, int packedOverlay, int color, PlayerModel<?> model, AbstractClientPlayer player, String renderKey, boolean usePlayerRotation) {
+    public void compile(PoseStack poseStack, MultiBufferSource buffer, int packedLight, int packedOverlay, int color, PlayerModel<?> model, PlayerModel<?> anchorLayer, AbstractClientPlayer player, String renderKey, boolean usePlayerRotation) {
         if (!isBaked) {
             bake();
         }
@@ -90,11 +91,11 @@ public class ClothingRendering {
         }
 
         if (isSlim(model) && hasSlimModel) {
-            compileWithAnchor(poseStack, buffer, packedLight, packedOverlay, color, model, player, slimBakedCubesWithAnchor, renderKey, usePlayerRotation);
+            compileWithAnchor(poseStack, buffer, packedLight, packedOverlay, color, anchorLayer, player, slimBakedCubesWithAnchor, renderKey, usePlayerRotation);
         } else if (hasModel) {
-            compileWithAnchor(poseStack, buffer, packedLight, packedOverlay, color, model, player, bakedCubesWithAnchor, renderKey, usePlayerRotation);
+            compileWithAnchor(poseStack, buffer, packedLight, packedOverlay, color, anchorLayer, player, bakedCubesWithAnchor, renderKey, usePlayerRotation);
         } else if (hasSlimModel) {
-            compileWithAnchor(poseStack, buffer, packedLight, packedOverlay, color, model, player, slimBakedCubesWithAnchor, renderKey, usePlayerRotation);
+            compileWithAnchor(poseStack, buffer, packedLight, packedOverlay, color, anchorLayer, player, slimBakedCubesWithAnchor, renderKey, usePlayerRotation);
         }
     }
 
@@ -159,7 +160,7 @@ public class ClothingRendering {
         Lighting.setupFor3DItems();
         MultiBufferSource.BufferSource buffer = Minecraft.getInstance().renderBuffers().bufferSource();
         PlayerRenderer renderer = (PlayerRenderer) Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(Minecraft.getInstance().player);
-        compile(poseStack, buffer, 15728880, OverlayTexture.NO_OVERLAY, 0xFFFFFFFF, renderer.getModel(), Minecraft.getInstance().player, "generic", true);
+        compile(poseStack, buffer, 15728880, OverlayTexture.NO_OVERLAY, 0xFFFFFFFF, renderer.getModel(), renderer.getModel(), Minecraft.getInstance().player, "generic", true);
         buffer.endBatch();
         poseStack.popPose();
     }
